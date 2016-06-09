@@ -48,6 +48,9 @@ var getUser = function() {
       var recommended = merchant['summary']['recommended_items']
       var merchantName = merchant['summary']['name']
       var merchantId = merchant['id']
+      var image = merchant['summary']['merchant_logo_raw']
+      console.log("do we have an image?")
+      console.log(image)
       var recommendedList = Object.keys(recommended)
       var length = recommendedList.length
 
@@ -56,38 +59,43 @@ var getUser = function() {
         var dishName = recommended[dishId]['name']
         var dishDescription = recommended[dishId]['description']
         var dishPrice = recommended[dishId]['price']
-        var dishWhole = {'dishName':dishName,'description':dishDescription,'price':dishPrice,'dishId':dishId,'merchantId':merchantId,'merchantName':merchantName,'url':url}
+        var dishWhole = {'dishName':dishName,'description':dishDescription,'price':dishPrice,'dishId':dishId,'merchantId':merchantId,'merchantName':merchantName,'url':url,'image':image}
         dishFinal.push(dishWhole)
         otherRecommended[dishId.toString()] = []
 
-        for(var n=0;n<length;n++){
-          var otherDishId = recommendedList[n]
-          var otherDishName = recommended[otherDishId]['name']
-          var otherDishDescription = recommended[otherDishId]['description']
-          var otherDishPrice = recommended[otherDishId]['price']
-          var otherDishWhole = {'name':otherDishName,'description':dishDescription,'price':otherDishPrice,'allDishId':otherDishId,'allMerchantId':merchantId}
-          otherRecommended[dishId.toString()].push(otherDishWhole)
-        }
+        // for(var n=0;n<length;n++){
+        //   var otherDishId = recommendedList[n]
+        //   var otherDishName = recommended[otherDishId]['name']
+        //   var otherDishDescription = recommended[otherDishId]['description']
+        //   var otherDishPrice = recommended[otherDishId]['price']
+        //   var otherDishWhole = {'name':otherDishName,'description':dishDescription,'price':otherDishPrice,'allDishId':otherDishId,'allMerchantId':merchantId}
+        //   otherRecommended[dishId.toString()].push(otherDishWhole)
+        // }
       }
   }
     var dishesLength = dishFinal.length
-    for(n=0;n<dishesLength;n++){
-      var display = null
-      var searchDish = dishFinal[n]
-      var data = searchDish
-      var promise = $.ajax ({
-        method:'POST',
-        url:'http://localhost:8080/food/image',
-        data:data,
-        datatype:'jsonp',
-        success:function(response){
-          var template = $('#postfood').html();
-          Mustache.parse(template, ["<%","%>"]);
-          var display = $.extend(response,{'num':slideCreationCounter});
-          $('.content').append(Mustache.render(template,display));
-          slideCreationCounter--
-        }
-      })
+    for(var n=0;n<dishesLength;n++){
+      var display = dishFinal[n]
+      display['num'] = slideCreationCounter
+      var template = $('#postfood').html();
+      Mustache.parse(template, ["<%","%>"]);
+      $('.content').append(Mustache.render(template,display));
+      slideCreationCounter--
+      // var searchDish = dishFinal[n]
+      // var data = searchDish
+      // var promise = $.ajax ({
+      //   method:'POST',
+      //   url:'http://localhost:8080/food/image',
+      //   data:data,
+      //   datatype:'jsonp',
+      //   success:function(response){
+      //     var template = $('#postfood').html();
+      //     Mustache.parse(template, ["<%","%>"]);
+      //     var display = $.extend(response,{'num':slideCreationCounter});
+      //     $('.content').append(Mustache.render(template,display));
+      //     slideCreationCounter--
+      //   }
+      // })
     }
   }
 

@@ -30,6 +30,7 @@ def logout():
 def get_current_user():
   if session.get('user'):
     g.user = session.get('user')
+    print(g.user)
     return
 
   result = get_user_from_cookie(cookies=request.cookies, app_id=APP_ID, app_secret=SECRET_KEY)
@@ -80,6 +81,8 @@ def get_user():
 
 @app_front.route('/liked',methods=['POST'])
 def liked():
+  print('in liked POST')
+  print(request.form)
   user_id = request.form['userId']
   merchant_id = request.form['merchantId']
   dish_id = request.form['dishId']
@@ -96,10 +99,14 @@ def liked():
 
 @app_front.route('/liked',methods=['GET'])
 def get_liked():
+  print('beginning of liked GET')
+  print(g.user)
   if not g.user:
     return None
   else:
     user_id = g.user['id']
+    print('in liked GET')
+    print(user_id)
     saved_likes = FoodLikes.query.filter_by(user_id=user_id).all()
 
     likes = []

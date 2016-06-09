@@ -36,7 +36,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/matthewgoorley/Desktop/LazySunday/Project/LazySunday/env"
+set -gx VIRTUAL_ENV "/Users/mattstrassman/Documents/Byte_Academy/LazySundayBeforeHost/LazySunday/env"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
